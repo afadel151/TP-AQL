@@ -1,7 +1,6 @@
 package com.emp;
 
 import com.emp.shared.models.User;
-import com.emp.shared.interfaces.UserRepositoryInterface;
 import com.emp.repositories.UserRepository;
 import com.emp.services.UserService;
 
