@@ -8,12 +8,13 @@ public class Palindrome {
         s = s.toLowerCase().replaceAll("\\s+", "");
         int i = 0;
         int j = s.length() - 1;
+        System.out.println("i: " + i + ", j: " + j);
         while (i < j) {
             if (s.charAt(i) != s.charAt(j)) {
                 return false;
             }
-            j++;
-            i--;
+            i++;
+            j--;
         }
         return true;
     }

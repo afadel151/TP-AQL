@@ -5,13 +5,16 @@ public class Anagram {
         if (s1 == null || s2 == null) {
             throw new NullPointerException("Strings must not be null");
         }
+        if (s1.isEmpty() || s2.isEmpty()) {
+            throw new IllegalArgumentException("Strings must not be empty");
+        }
         s1 = s1.toLowerCase().replaceAll("\\s+", "");
         s2 = s2.toLowerCase().replaceAll("\\s+", "");
         if (s1.length() != s2.length()) {
             return false;
         }
         int[] count = new int[26];
-        for (int i = 0; i <= s1.length(); i++) {
+        for (int i = 0; i < s1.length(); i++) {
             count[s1.charAt(i) - 'a']++;
             count[s2.charAt(i) - 'a']--;
         }
