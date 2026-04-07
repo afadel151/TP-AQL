@@ -1,4 +1,4 @@
-package com.emp.shared.models;
+package com.emp;
 
 /**
  * Hello world!
