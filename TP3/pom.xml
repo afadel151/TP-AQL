@@ -11,6 +11,12 @@
   <!-- FIXME change it to the project's website -->
   <url>http://www.example.com</url>
 
+    <parent>
+    <groupId>com.emp</groupId>
+    <artifactId>TP-AQL</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
+  </parent>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
@@ -25,10 +31,17 @@
         <type>pom</type>
         <scope>import</scope>
       </dependency>
+      
+
     </dependencies>
   </dependencyManagement>
 
   <dependencies>
+    <dependency>
+        <groupId>com.emp</groupId>
+        <artifactId>shared</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
