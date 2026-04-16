@@ -1,32 +1,56 @@
 package com.emp.services;
 
-import com.emp.shared.interfaces.ProductApiClientInterface;
-import com.emp.shared.exceptions.ApiException;
-import com.emp.shared.exceptions.InvalidDataException;
+import com.emp.shared.exceptions.ResourceNotFoundException;
 import com.emp.shared.models.Product;
+import com.emp.shared.interfaces.ProductRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
 public class ProductService {
 
-    private final ProductApiClientInterface productApiClient;
+    private final ProductRepository productRepository;
 
-    public ProductService(ProductApiClientInterface productApiClient) {
-        this.productApiClient = productApiClient;
+    public Product createProduct(Product product) {
+        if (product.getPrice() == null || product.getPrice() < 0) {
+            throw new IllegalArgumentException("Product price must be non-negative");
+        }
+        return productRepository.save(product);
     }
 
-    public Product getProduct(String productId) {
-        if (productId == null || productId.isBlank()) {
-            throw new InvalidDataException("Product ID must not be null or blank");
-        }
+    public Optional<Product> findById(Long id) {
+        return productRepository.findById(id);
+    }
 
-        Product product = productApiClient.getProduct(productId);
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
 
-        if (product == null) {
-            throw new ApiException("API returned no product for id: " + productId);
-        }
-        if (product.getName() == null || product.getPrice() < 0) {
-            throw new InvalidDataException("API returned malformed product data");
-        }
+    public List<Product> findByName(String name) {
+        return productRepository.findByNameContainingIgnoreCase(name);
+    }
 
-        return product;
+    public List<Product> findByMaxPrice(Double maxPrice) {
+        return productRepository.findByPriceLessThanEqual(maxPrice);
+    }
+
+    public Product updateProduct(Long id, Product updatedProduct) {
+        Product existing = productRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Product not found: " + id));
+        existing.setName(updatedProduct.getName());
+        existing.setPrice(updatedProduct.getPrice());
+        existing.setStock(updatedProduct.getStock());
+        return productRepository.save(existing);
+    }
+
+    public void deleteProduct(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new ResourceNotFoundException("Product not found: " + id);
+        }
+        productRepository.deleteById(id);
     }
 }
