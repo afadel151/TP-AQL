@@ -1,18 +1,39 @@
 package com.emp.shared.models;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Table(name = "orders")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Order {
 
-    private long id;
-    private String product;
-    private int quantity;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public Order(long id, String product, int quantity) {
-        this.id = id;
-        this.product = product;
-        this.quantity = quantity;
-    }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
 
-    public long getId() { return id; }
-    public String getProduct() { return product; }
-    public int getQuantity() { return quantity; }
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "product_id", nullable = false)
+    private Product product;
+
+    @Column(nullable = false)
+    private Integer quantity;
+
+    @Column(nullable = false)
+    private Double totalPrice;
+
+    @Column(nullable = false)
+    private LocalDateTime orderDate;
+
+    @Column
+    private String status; // PENDING, CONFIRMED, CANCELLED
 }

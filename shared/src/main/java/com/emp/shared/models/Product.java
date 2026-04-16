@@ -1,18 +1,26 @@
 package com.emp.shared.models;
 
+import jakarta.persistence.*;
+import lombok.*;
+
+@Entity
+@Table(name = "products")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class Product {
 
-    private String id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(nullable = false)
     private String name;
-    private double price;
 
-    public Product(String id, String name, double price) {
-        this.id = id;
-        this.name = name;
-        this.price = price;
-    }
+    @Column(nullable = false)
+    private Double price;
 
-    public String getId() { return id; }
-    public String getName() { return name; }
-    public double getPrice() { return price; }
+    @Column
+    private Integer stock;
 }
