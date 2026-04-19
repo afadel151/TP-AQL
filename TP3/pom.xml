@@ -21,7 +21,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven.compiler.release>17</maven.compiler.release>
-    <testcontainers.version>1.19.7</testcontainers.version>
+    <testcontainers.version>1.20.1</testcontainers.version>
   </properties>
 
   <dependencyManagement>
@@ -98,6 +98,13 @@
       <groupId>org.testcontainers</groupId>
       <artifactId>mysql</artifactId>
       <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+
+    <!-- H2 in-memory database for testing -->
+    <dependency>
+      <groupId>com.h2database</groupId>
+      <artifactId>h2</artifactId>
       <scope>test</scope>
     </dependency>
   </dependencies>
