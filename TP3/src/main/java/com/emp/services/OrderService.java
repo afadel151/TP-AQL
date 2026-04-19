@@ -9,6 +9,7 @@ import com.emp.shared.interfaces.ProductRepository;
 import com.emp.shared.interfaces.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -68,6 +69,7 @@ public class OrderService {
         return orderRepository.save(order);
     }
 
+    @Transactional
     public Order cancelOrder(Long orderId) {
         Order order = orderRepository.findById(orderId)
                 .orElseThrow(() -> new ResourceNotFoundException("Order not found: " + orderId));
