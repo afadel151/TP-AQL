@@ -20,11 +20,22 @@ public class UserServiceIntegrationTest extends AbstractTestContainer {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        if (dockerAvailable) {
+        if (dockerAvailable && mysqlContainer != null) {
+
             registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
             registry.add("spring.datasource.username", mysqlContainer::getUsername);
             registry.add("spring.datasource.password", mysqlContainer::getPassword);
             registry.add("spring.datasource.driver-class-name", mysqlContainer::getDriverClassName);
+            registry.add("spring.jpa.properties.hibernate.dialect",
+                    () -> "org.hibernate.dialect.MySQLDialect");
+        } else {
+            registry.add("spring.datasource.url",
+                    () -> "jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1");
+            registry.add("spring.datasource.username", () -> "sa");
+            registry.add("spring.datasource.password", () -> "");
+            registry.add("spring.datasource.driver-class-name", () -> "org.h2.Driver");
+            registry.add("spring.jpa.properties.hibernate.dialect",
+                    () -> "org.hibernate.dialect.H2Dialect");
         }
     }
 
@@ -47,7 +58,7 @@ public class UserServiceIntegrationTest extends AbstractTestContainer {
                 .password("secret")
                 .role("USER")
                 .build();
-        
+
         User created = userService.createUser(user);
         assertNotNull(created.getId());
 
