@@ -140,7 +140,3 @@ Le module partagé contient les modèles, interfaces et exceptions communs utili
 - Exceptions : ApiException, InvalidDataException, ResourceNotFoundException
 
 ---
-
-## Notes
-
-Voir `COMPLIANCE_ANALYSIS.md` pour une analyse détaillée de la conformité avec les exigences du manuel et un plan complet pour achever le travail manquant.
