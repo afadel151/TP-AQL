@@ -11,22 +11,17 @@ public abstract class AbstractTestContainer {
         boolean isDockerAvailable = false;
         MySQLContainer<?> container = null;
         try {
-            // Try to create and start a container to check if Docker is available
-            container = new MySQLContainer<>(DockerImageName.parse("mysql:8.0").asCompatibleSubstituteFor("mysql"))
+            container = new MySQLContainer<>(
+                    DockerImageName.parse("mysql:8.0").asCompatibleSubstituteFor("mysql"))
                     .withDatabaseName("testdb")
                     .withUsername("testuser")
                     .withPassword("testpass");
             container.start();
             isDockerAvailable = true;
+            System.out.println("Docker available, using MySQL Testcontainer.");
         } catch (Exception e) {
-            // Docker not available, will use H2
-            System.out.println("Docker not available, falling back to H2 in-memory database. Error: " + e.getMessage());
-            if (container != null) {
-                try {
-                    container.close();
-                } catch (Exception ignored) {
-                }
-            }
+            System.out.println("Docker/MySQL not available, falling back to H2. Error: " + e.getMessage());
+            container = null;
         }
         dockerAvailable = isDockerAvailable;
         mysqlContainer = container;
