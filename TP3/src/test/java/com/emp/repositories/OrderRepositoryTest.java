@@ -26,8 +26,7 @@ public class OrderRepositoryTest extends AbstractTestContainer {
 
     @DynamicPropertySource
     static void configureProperties(DynamicPropertyRegistry registry) {
-        if (dockerAvailable && mysqlContainer != null) {
-
+        if (dockerAvailable) {
             registry.add("spring.datasource.url", mysqlContainer::getJdbcUrl);
             registry.add("spring.datasource.username", mysqlContainer::getUsername);
             registry.add("spring.datasource.password", mysqlContainer::getPassword);
