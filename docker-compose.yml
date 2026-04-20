@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: tp-aql-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: tp-aql
+      MYSQL_USER: appuser
+      MYSQL_PASSWORD: apppassword
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - tp-aql-network
+
+  tp3-app:
+    build:
+      context: ./TP3
+      dockerfile: Dockerfile
+    container_name: tp3-application
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/tp-aql
+      SPRING_DATASOURCE_USERNAME: appuser
+      SPRING_DATASOURCE_PASSWORD: apppassword
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    depends_on:
+      - mysql
+    networks:
+      - tp-aql-network
+
+volumes:
+  mysql-data:
+
+networks:
+  tp-aql-network:
+    driver: bridge
